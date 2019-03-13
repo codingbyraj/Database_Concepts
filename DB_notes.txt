@@ -1,0 +1,22 @@
+What is Non Clustered indexing in database?
+
+
+A Non Clustered Index in SQL Server stores the index structure separately from the data that is physically stored in a table. 
+SQL Server allows you to create almost 999 non clustered indexes per table.
+
+The non clustered index in Sql Server is very useful to improve the query performance. 
+
+For example, if you had Customer table. Assume Customer key is Primary key (means Clustered Index) but your requirement is to retrieve records by yearly Income.
+
+In this situation we have to create a non clustered index on Yearly Income column. 
+This will store the Yearly income records in separate location along with the row address. 
+When you ask for customer record whose Income  = 79000. 
+First, SQL will look for 79000 in second table and after finding the record it will check the row address. 
+Second, it will retrieve record (from First table) at that row address.
+
+SYNTAX:
+
+CREATE NONCLUSTERED INDEX [INDEX_NAME]
+ON [TABLE_NAME] ([COLUMN_NAME] ASC)
+
+https://www.tutorialgateway.org/non-clustered-index-in-sql-server/
