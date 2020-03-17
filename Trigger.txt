@@ -1,0 +1,97 @@
+The first and most important things in everyone's mind is, “What are triggers and why we do we use them?” So a trigger is nothing but a special kind of Stored Procedure.
+ 
+"A trigger is a special kind of Stored Procedure or stored program that is automatically fired or executed when some event (insert, delete and update) occurs."
+ 
+If you write a trigger for an insert operation on a table, after firing the trigger, it creates a table named “INSERTED” in memory. Then it does the insert operation and then the statements inside the trigger executes. We can query the “INSERTED” table to manipulate or use the inserted row(s) from the trigger.
+ 
+Similarly, if you write a trigger for a delete operation on a table, it creates a table in memory named “DELETED” and then deletes the row.
+ 
+Why and when to use a trigger
+ 
+We use a trigger when we want some event to happen automatically on certain desirable scenarios.
+ 
+Let's see an example
+ 
+You have a table that changes frequently, now you want to know how many times and when these changes take place.
+ 
+In that case you can create a trigger that will insert the desired data into another table whenever any change in the main table occurs.
+ 
+Types of Triggers
+ 
+In SQL Server we can create the following 3 types of triggers:
+Data Definition Language (DDL) triggers
+Data Manipulation Language (DML) triggers
+Logon triggers
+DDL Triggers
+ 
+In SQL Server we can create triggers on DDL statements (like CREATE, ALTER and DROP) and certain system-defined Stored Procedures that does DDL-like operations.
+ 
+DML Triggers
+ 
+In SQL Server we can create triggers on DML statements (like INSERT, UPDATE and DELETE) and Stored Procedures that do DML-like operations. DML Triggers are of two types.
+ 
+After trigger (using FOR/AFTER CLAUSE)
+ 
+The After trigger (using the FOR/AFTER CLAUSE) fires after SQL Server finishes the execution of the action successfully that fired it.
+ 
+Example: If you insert a record/row into a table then the trigger related/associated with the insert event on this table will fire only after the row passes all the constraints, such as primary key constraint and some rules. If the record/row insertion fails, SQL Server will not fire the After Trigger.
+ 
+Instead of Trigger (using INSTEAD OF CLAUSE)
+ 
+The Instead of Trigger (using the INSTEAD OF CLAUSE) fires before SQL Server starts the execution of the action that fired it. This is different from the AFTER trigger that fires after the action that caused it to fire. We can have an INSTEAD OF insert/update/delete trigger on a table that successfully executed but does not include the actual insert/update/delete to the table.
+ 
+Example: If you insert a record/row into a table then the trigger related/associated with the insert event on this table will fire before the row passes all the constraints, such as primary key constraint and some rules. If the record/row insertion fails, SQL Server will fire the Instead of Trigger.
+ 
+Logon Triggers
+ 
+Logon triggers are a special type of triggers that fire when a LOGON event of SQL Server is raised. This event is raised when a user session is being established with SQL Server that is made after the authentication phase finishes, but before the user session is actually established. Hence, all messages that we define in the trigger, such as error messages, will be redirected to the SQL Server error log. Logon triggers do not fire if authentication fails. We can use these triggers to audit and control server sessions, such as to track login activity or limit the number of sessions for a specific login.
+
+
+
+
+
+QTT ketra - 0307
+OQT ketra - 0308
+apostrophe.docx
+
+
+triggerSQL --
+
+[dbo].[spJobBillCustomUpdate]
+[spUpdateNonQTTProducts]
+[spInsertCustomProductDetails]    
+
+
+
+
+===================================
+
+use Ketra_Integration
+
+select * from TriggerDemo
+
+USE Ketra_Integration
+-- SELECT * FROM JobBill
+-- ORDER BY RID DESC;
+
+
+-- CREATE TABLE TriggerDemo(LastValue INT, CurrentValue INT, Date Datetime);
+
+
+CREATE TRIGGER trgAfterUpdate ON dbo.JobBill
+FOR UPDATE
+AS  
+declare @productDescription varchar(100);  
+select @productDescription = i.ProductDescription1 from inserted i;
+set @audit_action='Inserted Record -- After Insert Trigger.';  
+  
+INSERT INTO trgAfterUpdate
+(LastValue, CurrentValue, Date)   
+values(,getdate());  
+  
+PRINT 'AFTER INSERT trigger fired.'  
+GO  
+
+=====================
+@@identiy
+
